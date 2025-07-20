@@ -36,6 +36,13 @@ releases:
             server.insecure: true
           cm:
             url: https://argocd.timothyw.dev
+            accounts.image-updater: apiKey
+            accounts.image-updater.enabled: "true"
+          rbac:
+            policy.csv: |
+              p, role:image-updater, applications, get, */*, allow
+              p, role:image-updater, applications, update, */*, allow
+              g, image-updater, role:image-updater
     needs:
       - metallb-system/metallb
 
