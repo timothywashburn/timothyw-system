@@ -38,3 +38,18 @@ releases:
             url: https://argocd.timothyw.dev
     needs:
       - metallb-system/metallb
+
+  - name: argocd-image-updater
+    namespace: argocd
+    chart: argo/argocd-image-updater
+    version: 0.12.3
+    values:
+      - config:
+          logLevel: info
+          argocd:
+            grpcWeb: true
+            serverAddress: argocd-server.argocd.svc.cluster.local
+            insecure: true
+            plaintext: false
+    needs:
+      - argocd/argocd
