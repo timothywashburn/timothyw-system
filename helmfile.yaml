@@ -1,0 +1,40 @@
+repositories:
+  - name: metallb
+    url: https://metallb.github.io/metallb
+  - name: kubernetes-dashboard
+    url: https://kubernetes.github.io/dashboard/
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
+
+releases:
+  - name: metallb
+    namespace: metallb-system
+    chart: metallb/metallb
+    version: 0.15.2
+    createNamespace: true
+
+  - name: kubernetes-dashboard
+    namespace: kubernetes-dashboard
+    chart: kubernetes-dashboard/kubernetes-dashboard
+    version: 7.13.0
+    createNamespace: true
+    needs:
+      - metallb-system/metallb
+
+  - name: argocd
+    namespace: argocd
+    chart: argo/argo-cd
+    version: 8.1.3
+    createNamespace: true
+    values:
+      - server:
+          insecure: true
+          service:
+            type: ClusterIP
+        configs:
+          params:
+            server.insecure: true
+          cm:
+            url: https://argocd.timothyw.dev
+    needs:
+      - metallb-system/metallb

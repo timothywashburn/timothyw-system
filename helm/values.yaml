@@ -1,0 +1,17 @@
+# Global configuration
+global:
+  dashboardDomain: k8s.timothyw.dev
+  argoCDDomain: argo.timothyw.dev
+  loadBalancerIP: "64.71.152.179"
+
+# Infrastructure components
+infrastructure:
+  traefik:
+    rbacFix:
+      enabled: true
+  metallb:
+    enabled: true
+  dashboard:
+    enabled: true
+  argocd:
+    enabled: true
