@@ -6,11 +6,12 @@ This document provides step-by-step instructions for setting up the infrastructu
 
 - kubectl installed locally
 - Helmfile installed locally
-- SSH access (via ssh key) to server
+- SSH access (via ssh key) to vps
 
 ## Step 1: Install K3s
 
 ```bash
+# SSH into VPS
 curl -sfL https://get.k3s.io | sh -
 sudo k3s kubectl get nodes
 ```
@@ -31,10 +32,17 @@ Use Helmfile to install the core infrastructure components:
 helmfile sync
 ```
 
+If there are port-forward networking issues after the sync, restart k3s:
+
+```bash
+# SSH into VPS
+sudo systemctl restart k3s
+```
+
 ## Step 4: Access ArgoCD
 
 ```bash
-# Get the admin password
+# Get the ArgoCD password
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 
 # Port forward to access locally
