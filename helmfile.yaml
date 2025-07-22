@@ -35,6 +35,29 @@ releases:
           insecure: true
           service:
             type: ClusterIP
+          metrics:
+            enabled: true
+            service:
+              annotations:
+                prometheus.io/scrape: "true"
+                prometheus.io/port: "8083"
+                prometheus.io/path: "/metrics"
+        controller:
+          metrics:
+            enabled: true
+            service:
+              annotations:
+                prometheus.io/scrape: "true"
+                prometheus.io/port: "8082"
+                prometheus.io/path: "/metrics"
+        repoServer:
+          metrics:
+            enabled: true
+            service:
+              annotations:
+                prometheus.io/scrape: "true"
+                prometheus.io/port: "8084"
+                prometheus.io/path: "/metrics"
         configs:
           params:
             server.insecure: true
@@ -183,6 +206,10 @@ releases:
           type: ClusterIP
         initChownData:
           enabled: false
+        grafana.ini:
+          server:
+            root_url: https://grafana.timothyw.dev
+            serve_from_sub_path: false
         datasources:
           datasources.yaml:
             apiVersion: 1
