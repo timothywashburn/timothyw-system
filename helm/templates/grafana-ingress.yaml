@@ -1,0 +1,19 @@
+{{- if .Values.infrastructure.monitoring.enabled }}
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`{{ .Values.global.grafanaDomain }}`)
+      priority: 10
+      services:
+        - name: grafana
+          port: 80
+{{- end }}
