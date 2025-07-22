@@ -8,12 +8,17 @@ This document provides step-by-step instructions for setting up the infrastructu
 - Helmfile installed locally
 - SSH access (via ssh key) to vps
 
-## Step 1: Install K3s
+## Step 1: Install K3s and Configure System
 
 ```bash
 # SSH into VPS
 curl -sfL https://get.k3s.io | sh -
 sudo k3s kubectl get nodes
+
+# Configure system limits for monitoring workloads
+echo 'fs.inotify.max_user_instances = 8192' >> /etc/sysctl.conf
+echo 'fs.inotify.max_user_watches = 524288' >> /etc/sysctl.conf
+sysctl -p
 ```
 
 ## Step 2: Configure Local kubectl Access
@@ -83,6 +88,7 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 Point DNS records to cluster's external IP:
 - `argo.timothyw.dev` → `EXTERNAL_IP`
 - `k8s.timothyw.dev` → `EXTERNAL_IP`
+- `grafana.timothyw.dev` → `EXTERNAL_IP`
 
 ## Step 8: Get Kubernetes Dashboard Token
 
@@ -119,8 +125,63 @@ The ArgoCD Image Updater is already installed via helmfile. To complete the setu
 
 The image updater will now automatically update applications that have the proper annotations.
 
-## Step 10: Verify Setup
+## Step 10: Access Monitoring Stack
+
+### Grafana (Observability Dashboard)
+- URL: https://grafana.timothyw.dev
+- Username: `admin`
+- Password: `adminadminadmin` ⚠️ **Change this default password for production use**
+
+**Getting Started with Grafana:**
+1. Go to **Explore** → **Prometheus** for metrics queries
+2. Go to **Explore** → **Loki** for log queries
+
+**Prometheus Queries (Metrics):**
+```promql
+# Show all targets
+up
+
+# CPU usage by pod
+rate(container_cpu_usage_seconds_total[5m])
+
+# Memory usage
+container_memory_usage_bytes
+
+# Kubernetes pod status
+kube_pod_info
+```
+
+**Loki Queries (Logs):**
+```logql
+# Monitoring namespace logs
+{namespace="monitoring"}
+
+# ArgoCD logs
+{namespace="argocd"}
+
+# Error logs from monitoring namespace
+{namespace="monitoring"} |= "error"
+
+# All logs containing "restart"
+{namespace="monitoring"} |= "restart"
+```
+
+## Step 11: Verify Setup
 
 After DNS propagation, access the dashboards here:
 - ArgoCD: https://argo.timothyw.dev
 - Kubernetes Dashboard: https://k8s.timothyw.dev
+- Grafana: https://grafana.timothyw.dev
+
+## Monitoring Stack Components
+
+The following monitoring components are automatically deployed:
+
+- **Loki**: Log aggregation and storage
+- **Prometheus**: Metrics collection and storage  
+- **Grafana**: Visualization dashboard (with Loki + Prometheus datasources)
+- **Grafana Alloy**: Data collection agents that gather:
+  - Pod logs → Loki
+  - Cluster events → Loki
+  - Cluster metrics → Prometheus
+  - Node metrics → Prometheus
