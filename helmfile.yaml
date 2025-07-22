@@ -88,6 +88,13 @@ releases:
         extraArgs:
           - --interval
           - 30s
+        metrics:
+          enabled: true
+          service:
+            annotations:
+              prometheus.io/scrape: "true"
+              prometheus.io/port: "8081"
+              prometheus.io/path: "/metrics"
     needs:
       - argocd/argocd
 
@@ -123,6 +130,7 @@ releases:
           compactor:
             retention_enabled: true
             retention_delete_delay: 2h
+            delete_request_store: s3
           ruler:
             enable_api: true
           querier:
