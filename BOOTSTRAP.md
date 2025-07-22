@@ -63,7 +63,7 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
    
    **Source:**
    - **Repository URL**: `https://github.com/timothywashburn/timothyw.dev`
-   - **Revision**: `HEAD`
+   - **Revision** : `main` (branch)
    - **Path**: `helm`
    
    **Destination:**
@@ -94,7 +94,32 @@ kubectl get secret admin-user-token -n kubernetes-dashboard -o jsonpath='{.data.
 
 This token never expires and provides full cluster admin access.
 
-## Step 9: Verify Setup
+## Step 9: Configure ArgoCD Image Updater
+
+The ArgoCD Image Updater is already installed via helmfile. To complete the setup:
+
+1. **Generate API token via ArgoCD Web UI**:
+   - Go to https://argocd.timothyw.dev
+   - Navigate to **Settings** → **Accounts**
+   - Find the `image-updater` account
+   - Click **Generate Token**
+   - Copy the generated token
+
+2. **Create the token secret**:
+   ```bash
+   kubectl create secret generic argocd-image-updater-secret \
+     --from-literal argocd.token=$YOUR_TOKEN \
+     --namespace argocd
+   ```
+
+3. **Apply additional RBAC permissions**:
+   ```bash
+   helmfile apply
+   ```
+
+The image updater will now automatically update applications that have the proper annotations.
+
+## Step 10: Verify Setup
 
 After DNS propagation, access the dashboards here:
 - ArgoCD: https://argo.timothyw.dev
