@@ -152,6 +152,21 @@ releases:
               value: 750MiB
         chunksCache:
           writebackSizeLimit: 10MB
+          resources:
+            limits:
+              cpu: 100m
+              memory: 200Mi
+            requests:
+              cpu: 50m
+              memory: 100Mi
+        resultsCache:
+          resources:
+            limits:
+              cpu: 100m
+              memory: 200Mi
+            requests:
+              cpu: 50m
+              memory: 100Mi
         backend:
           replicas: 0
         read:
