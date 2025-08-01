@@ -266,6 +266,8 @@ releases:
     values:
       - cluster:
           name: timothyw-cluster
+        global:
+          scrapeInterval: 20s
         destinations:
           - name: prometheus
             type: prometheus
