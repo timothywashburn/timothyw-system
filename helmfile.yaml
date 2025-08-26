@@ -203,14 +203,19 @@ releases:
           persistentVolume:
             enabled: true
             size: 10Gi
+          extraArgs:
+            web.enable-remote-write-receiver: ""
         alertmanager:
           enabled: false
         kubeStateMetrics:
-          enabled: true
+          enabled: false
         nodeExporter:
-          enabled: true
+          enabled: false
         pushgateway:
           enabled: false
+        serverFiles:
+          prometheus.yml:
+            scrape_configs: []
     needs:
       - monitoring/loki
 
