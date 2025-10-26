@@ -19,19 +19,19 @@ infrastructure:
 
 argocdApplications:
   applications:
-    - name: pat2
-      namespace: pat2
-      repoURL: https://github.com/timothywashburn/pat-api
-      path: helm
-      targetRevision: main
-      images:
-        - alias: server
-          image: kyrokrypt/pat-api
-          helmImageName: image.server.name
-          helmImageTag: image.server.tag
-          pullSecret: pat/dockerhub-registry
-        - alias: client
-          image: kyrokrypt/pat-app
-          helmImageName: image.client.name
-          helmImageTag: image.client.tag
-          pullSecret: pat/dockerhub-registry
+#    - name: pat2
+#      namespace: pat2
+#      repoURL: https://github.com/timothywashburn/pat-api
+#      path: helm
+#      targetRevision: main
+#      images:
+#        - alias: server
+#          image: kyrokrypt/pat-api
+#          helmImageName: image.server.name
+#          helmImageTag: image.server.tag
+#          pullSecret: pat/dockerhub-registry
+#        - alias: client
+#          image: kyrokrypt/pat-app
+#          helmImageName: image.client.name
+#          helmImageTag: image.client.tag
+#          pullSecret: pat/dockerhub-registry
