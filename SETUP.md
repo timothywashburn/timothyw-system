@@ -83,14 +83,24 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 2. Click **SYNC**
 3. Let ArgoCD deploy the infrastructure components
 
-## Step 7: DNS Configuration
+## Step 7: Patch timothyw-system to Ignore Image Updater Changes
+
+After the initial sync, run the patch script to prevent drift detection from ArgoCD Image Updater:
+
+```bash
+./scripts/patch-timothyw-system.sh
+```
+
+This configures the timothyw-system Application to ignore changes to image parameters made by the Image Updater.
+
+## Step 8: DNS Configuration
 
 Point DNS records to cluster's external IP:
 - `argo.timothyw.dev` → `EXTERNAL_IP`
 - `k8s.timothyw.dev` → `EXTERNAL_IP`
 - `grafana.timothyw.dev` → `EXTERNAL_IP`
 
-## Step 8: Get Kubernetes Dashboard Token
+## Step 9: Get Kubernetes Dashboard Token
 
 To access the Kubernetes Dashboard, get the admin token:
 
@@ -100,7 +110,7 @@ kubectl get secret admin-user-token -n kubernetes-dashboard -o jsonpath='{.data.
 
 This token never expires and provides full cluster admin access.
 
-## Step 9: Configure ArgoCD Image Updater
+## Step 10: Configure ArgoCD Image Updater
 
 The ArgoCD Image Updater is already installed via helmfile. To complete the setup:
 
@@ -125,7 +135,7 @@ The ArgoCD Image Updater is already installed via helmfile. To complete the setu
 
 The image updater will now automatically update applications that have the proper annotations.
 
-## Step 10: Access Monitoring Stack
+## Step 11: Access Monitoring Stack
 
 ### Grafana (Observability Dashboard)
 - URL: https://grafana.timothyw.dev
@@ -166,7 +176,7 @@ kube_pod_info
 {namespace="monitoring"} |= "restart"
 ```
 
-## Step 11: Verify Setup
+## Step 12: Verify Setup
 
 After DNS propagation, access the dashboards here:
 - ArgoCD: https://argo.timothyw.dev
