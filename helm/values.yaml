@@ -24,9 +24,21 @@ applications:
     branch: main
     path: helm
     images:
+      - alias: client
+        image: kyrokrypt/pat-app
+        pullSecret: pat/dockerhub-registry
       - alias: server
         image: kyrokrypt/pat-api
         pullSecret: pat/dockerhub-registry
+  - name: clubhive
+    namespace: clubhive
+    repoURL: https://github.com/timothywashburn/clubhive
+    branch: main
+    path: helm
+    images:
       - alias: client
-        image: kyrokrypt/pat-app
+        image: kyrokrypt/clubhive-server-main
+        pullSecret: pat/dockerhub-registry
+      - alias: server
+        image: kyrokrypt/clubhive-server-main
         pullSecret: pat/dockerhub-registry
