@@ -17,17 +17,16 @@ infrastructure:
   monitoring:
     enabled: true
 
-argocdApplications:
-  applications:
-    - name: pat
-      namespace: pat
-      repoURL: https://github.com/timothywashburn/pat-api
-      branch: main
-      path: helm
-      images:
-        - alias: server
-          image: kyrokrypt/pat-api
-          pullSecret: pat/dockerhub-registry
-        - alias: client
-          image: kyrokrypt/pat-app
-          pullSecret: pat/dockerhub-registry
+applications:
+  - name: pat
+    namespace: pat
+    repoURL: https://github.com/timothywashburn/pat-api
+    branch: main
+    path: helm
+    images:
+      - alias: server
+        image: kyrokrypt/pat-api
+        pullSecret: pat/dockerhub-registry
+      - alias: client
+        image: kyrokrypt/pat-app
+        pullSecret: pat/dockerhub-registry
