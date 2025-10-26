@@ -20,7 +20,7 @@ infrastructure:
 argocdApplications:
   applications:
     - name: pat
-      namespace: pat2
+      namespace: pat
       repoURL: https://github.com/timothywashburn/pat-api
       path: helm
       targetRevision: main
