@@ -38,7 +38,7 @@ applications:
     valuesFile: values-prod.yaml
     images:
       - alias: client
-        image: kyrokrypt/clubhive-server-main
+        image: kyrokrypt/clubhive-client-main
         pullSecret: clubhive/dockerhub-registry
       - alias: server
         image: kyrokrypt/clubhive-server-main
