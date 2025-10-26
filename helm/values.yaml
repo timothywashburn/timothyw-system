@@ -30,8 +30,8 @@ applications:
       - alias: server
         image: kyrokrypt/pat-api
         pullSecret: pat/dockerhub-registry
-  - name: clubhive
-    namespace: clubhive
+  - name: clubhive-test
+    namespace: clubhive-test
     repoURL: https://github.com/timothywashburn/clubhive
     branch: main
     path: helm
