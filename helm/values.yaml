@@ -30,8 +30,8 @@ applications:
       - alias: server
         image: kyrokrypt/pat-api
         pullSecret: pat/dockerhub-registry
-  - name: clubhive-test
-    namespace: clubhive-test
+  - name: clubhive
+    namespace: clubhive
     repoURL: https://github.com/timothywashburn/clubhive
     branch: main
     path: helm
@@ -42,4 +42,17 @@ applications:
         pullSecret: clubhive/dockerhub-registry
       - alias: server
         image: kyrokrypt/clubhive-server-main
+        pullSecret: clubhive/dockerhub-registry
+  - name: clubhive-dev
+    namespace: clubhive-dev
+    repoURL: https://github.com/timothywashburn/clubhive
+    branch: dev
+    path: helm
+    valuesFile: values-dev.yaml
+    images:
+      - alias: client
+        image: kyrokrypt/clubhive-client-dev
+        pullSecret: clubhive/dockerhub-registry
+      - alias: server
+        image: kyrokrypt/clubhive-server-dev
         pullSecret: clubhive/dockerhub-registry
