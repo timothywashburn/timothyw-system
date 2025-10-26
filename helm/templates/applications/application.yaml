@@ -20,11 +20,16 @@ spec:
     repoURL: {{ .repoURL }}
     path: {{ .path }}
     targetRevision: {{ .branch }}
-    {{- if .valuesFile }}
     helm:
+      {{- if .valuesFile }}
       valueFiles:
         - {{ .valuesFile }}
-    {{- end }}
+      {{- end }}
+      parameters:
+        {{- range .images }}
+        - name: image.{{ .alias }}.name
+          value: {{ .image }}
+        {{- end }}
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ .namespace }}
