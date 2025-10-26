@@ -39,7 +39,7 @@ applications:
     images:
       - alias: client
         image: kyrokrypt/clubhive-server-main
-        pullSecret: pat/dockerhub-registry
+        pullSecret: clubhive/dockerhub-registry
       - alias: server
         image: kyrokrypt/clubhive-server-main
-        pullSecret: pat/dockerhub-registry
+        pullSecret: clubhive/dockerhub-registry
