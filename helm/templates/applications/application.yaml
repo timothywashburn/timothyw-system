@@ -1,0 +1,32 @@
+{{- range .Values.argocdApplications.applications }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .name }}
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: {{ include "timothyw-system.imageList" .images }}
+    argocd-image-updater.argoproj.io/write-back-method: argocd
+    {{- range .images }}
+    argocd-image-updater.argoproj.io/{{ .alias }}.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/{{ .alias }}.helm.image-name: {{ .helmImageName }}
+    argocd-image-updater.argoproj.io/{{ .alias }}.helm.image-tag: {{ .helmImageTag }}
+    argocd-image-updater.argoproj.io/{{ .alias }}.pull-secret: pullsecret:{{ .pullSecret }}
+    {{- end }}
+spec:
+  project: default
+  source:
+    repoURL: {{ .repoURL }}
+    path: {{ .path }}
+    targetRevision: {{ .targetRevision }}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+{{- end }}
