@@ -35,7 +35,7 @@ applications:
     repoURL: https://github.com/timothywashburn/clubhive
     branch: main
     path: helm
-    valuesFile: clubhive-prod.yml
+    valuesFile: values-prod.yaml
     images:
       - alias: client
         image: kyrokrypt/clubhive-server-main
